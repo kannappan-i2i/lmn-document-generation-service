@@ -20,7 +20,8 @@ https://www.python.org/downloads/release/python-370/
  
 ```
 pip install openai
-pip install streamlit 
+pip install streamlit
+pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 ```
 
 ## Running the Application
