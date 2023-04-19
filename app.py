@@ -14,8 +14,10 @@ from googleapiclient.errors import HttpError
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
+
+
 def execute_gpt_command(params):
-    openai.api_key = os.getenv('OPENAI_API_KEY');
+    openai.api_key = os.getenv('OPENAI_API_KEY')
     promptText = createPromptText(params);
     print(promptText);
     # create a completion
@@ -95,24 +97,5 @@ def unMaskTemplate (template, params):
     template = template.replace("{patient_name}", params["patientName"]);
     template = template.replace("{Your Name}", params["doctor_name"]);
     return template;
-
-if __name__ == '__main__':
-    
-	# Sample Params
-    params = {
-        "patient_name": "Smith",
-        "insurance_company": "ABC Company",
-        "treatment": "Catheterization",
-        "diagnosis": "myocardial infraction",
-        "tone": "assertive",
-        "include_sci_ref": True,
-        "include_trial_FDA": False,
-        "include_clin_rat": True,
-        "doctor_name": "Doctor Name"
-    };
-    completion= execute_gpt_command(params);
-    response = completion.choices[0].text;
-    print(unMaskTemplate(template, params));
-    # create_document_and_insert(response
 
 
