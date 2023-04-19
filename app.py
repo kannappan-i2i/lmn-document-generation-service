@@ -23,7 +23,7 @@ def execute_gpt_command(params):
     # create a completion
     completion = openai.Completion.create(model="text-davinci-003",prompt=promptText, max_tokens=4000, temperature=0 );
     response = completion.choices[0].text;
-    print(unMaskTemplate(response, params));
+    return response
 
 def createPromptText(params):
     print ("creating prompt");
@@ -93,9 +93,9 @@ def create_document_and_insert(text_content):
 
 
 
-def unMaskTemplate (template, params):
-    template = template.replace("{patient_name}", params["patientName"]);
-    template = template.replace("{Your Name}", params["doctor_name"]);
-    return template;
+def unMaskTemplate (response, params):
+    response = response.replace('{patient_name}', params["patientName"])
+    response = response.replace('{Your Name}', params["doctor_name"])
+    return response;
 
 

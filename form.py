@@ -39,8 +39,8 @@ def framePromtCommand():
 
 
 if st.button("Submit", key="my_button"):
-    completion= app.execute_gpt_command(patInfo);
-    response = completion.choices[0].text;
+    response= app.execute_gpt_command(patInfo);
     unMaskTemplateResponse = app.unMaskTemplate(response, patInfo);
+    print(f'unMaskedTemplate response from gpt :{unMaskTemplateResponse}')
     app.create_document_and_insert(unMaskTemplateResponse)
     print('document created successfully')
