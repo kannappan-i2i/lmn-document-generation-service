@@ -14,29 +14,30 @@ from googleapiclient.errors import HttpError
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
-def execute_gpt_command(openai, params):
-
-    promptText = createPrompt(params);
+def execute_gpt_command(params):
+    openai.api_key = os.getenv('OPENAI_API_KEY');
+    promptText = createPromptText(params);
     print(promptText);
     # create a completion
-    completion = openai.Completion.create(model="text-davinci-003",prompt=promptText, max_tokens=4000, temperature=0 )
-    return completion;
+    completion = openai.Completion.create(model="text-davinci-003",prompt=promptText, max_tokens=4000, temperature=0 );
+    response = completion.choices[0].text;
+    print(unMaskTemplate(response, params));
 
-def createPrompt(params):
+def createPromptText(params):
     print ("creating prompt");
     promptText = "Write Medical Necessity letter to insurance company named {insurance_company} for patient named {patient_name} , needs {treatment} treatment for {diagnosis}. Write letter in {tone} tone.";
-    promptText = promptText.replace("{insurance_company}", params["insurance_company"]);
+    promptText = promptText.replace("{insurance_company}", params["insuranceCompany"]);
     promptText = promptText.replace("{treatment}", params["treatment"]);
     promptText = promptText.replace("{diagnosis}", params["diagnosis"]);
     promptText = promptText.replace("{tone}", params["tone"]);
 
-    if (bool (params["include_sci_ref"])):
+    if (bool (params["includeReferences"])):
         promptText = promptText + " Include scientific references from book.";
     
-    if (bool (params["include_trial_FDA"])):
+    if (bool (params["includeTrialData"])):
         promptText = promptText + " Include trial data supporting FDA approval.";
     
-    if (bool (params["include_clin_rat"])):
+    if (bool (params["clinicalRationale"])):
         promptText = promptText + " Include clinical rationale behind the treatment.";
 
     return promptText;
@@ -91,12 +92,12 @@ def create_document_and_insert(text_content):
 
 
 def unMaskTemplate (template, params):
-    template = template.replace("{patient_name}", params["patient_name"]);
+    template = template.replace("{patient_name}", params["patientName"]);
     template = template.replace("{Your Name}", params["doctor_name"]);
     return template;
 
 if __name__ == '__main__':
-    openai.api_key = os.getenv('OPENAI_API_KEY')
+    
 	# Sample Params
     params = {
         "patient_name": "Smith",
@@ -109,8 +110,8 @@ if __name__ == '__main__':
         "include_clin_rat": True,
         "doctor_name": "Doctor Name"
     };
-    completion= execute_gpt_command(openai, params);
-    response = completion.choices[0].text;)
+    completion= execute_gpt_command(params);
+    response = completion.choices[0].text;
     print(unMaskTemplate(template, params));
     # create_document_and_insert(response
 
