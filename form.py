@@ -1,4 +1,5 @@
 import streamlit as st
+import app
 
 st.title('Patient Details')
 patName = st.text_input("Patient Name")
@@ -27,7 +28,9 @@ patInfo = {
     "treatment": treatmentDetails,
     "includeReferences": includeReferences,
     "includeTrialData": includeTrialData,
-    "clinicalRationale": clinicalRationale
+    "clinicalRationale": clinicalRationale,
+    "tone":"assertive",
+    "doctor_name":"Mr. Doctor"
 }
 
 
@@ -36,4 +39,4 @@ def framePromtCommand():
 
 
 if st.button("Submit", key="my_button"):
-    framePromtCommand()
+    app.execute_gpt_command(patInfo);
